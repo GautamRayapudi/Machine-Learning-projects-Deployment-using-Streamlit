@@ -57,12 +57,20 @@ inputs.append(Minor_Axis)
 Eccentricity = st.number_input('Eccentricity')
 inputs.append(Eccentricity)
 
-model = pickle.load(open(r"C:\Users\ASUS\Documents\Innomatics Jupyter notebooks\Machine Learning\Snake\Tasks\Tuesday Task\tumor.pkl","rb"))
+import os
+# Get the directory of the current script
+current_dir = os.path.dirname(__file__)
 
-if st.button("Submit") == True:
+# Construct the path to the pickle file relative to the current script
+pickle_file_path = os.path.join(current_dir, "tumor.pkl")
+
+# Load the pickle file
+with open(pickle_file_path, "rb") as f:
+    model = pickle.load(f)
+if st.button("Submit")==True:
     inputs_df = pd.DataFrame([inputs], columns=['Area', 'Perimeter', 'Convex Area', 'Solidity', 'Equivalent Diameter', 'Major Axis', 'Minor Axis', 'Eccentricity'])
     result = model.predict(inputs_df)[0]
-    if result == 0:
-        st.text("No Tumor Detected")
-    elif result == 1:
-        st.text("Tumor Detected")
+if result == 0:
+    st.text("No Tumor Detected")
+elif result == 1:
+    st.text("Tumor Detected")
